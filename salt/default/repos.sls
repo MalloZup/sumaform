@@ -50,35 +50,23 @@ os-update-repo:
     - template: jinja
 {% endif %}
 
-{% if 'head' in grains.get('version', '') or '3.1-stable' in grains.get('version', '') %}
-tools-base-repo:
+{% if 'stable' in grains.get('version', 'stable') %}
+tools-pool-repo:
   file.managed:
     - name: /etc/zypp/repos.d/SLE-Manager-Tools-SLE-11-x86_64.repo
     - source: salt://default/repos.d/SLE-Manager-Tools-SLE-11-x86_64.repo
-    - template: jinja
-
-tools-devel-repo:
-  file.managed:
-    - name: /etc/zypp/repos.d/Devel_Galaxy_Manager_Head_SLE-Manager-Tools-11-x86_64.repo
-    - source: salt://default/repos.d/Devel_Galaxy_Manager_Head_SLE-Manager-Tools-11-x86_64.repo
     - template: jinja
 {% elif 'nightly' in grains.get('version', '') %}
-tools-base-repo:
-  file.managed:
-    - name: /etc/zypp/repos.d/SLE-Manager-Tools-SLE-11-x86_64.repo
-    - source: salt://default/repos.d/SLE-Manager-Tools-SLE-11-x86_64.repo
-    - template: jinja
-
-tools-devel-repo:
+tools-pool-repo:
   file.managed:
     - name: /etc/zypp/repos.d/Devel_Galaxy_Manager_3.0_SLE-Manager-Tools-11-x86_64.repo
     - source: salt://default/repos.d/Devel_Galaxy_Manager_3.0_SLE-Manager-Tools-11-x86_64.repo
     - template: jinja
-{% elif 'stable' in grains.get('version', 'stable') %}
-tools-base-repo:
+{% elif 'head' in grains.get('version', '') %}
+tools-pool-repo:
   file.managed:
-    - name: /etc/zypp/repos.d/SLE-Manager-Tools-SLE-11-x86_64.repo
-    - source: salt://default/repos.d/SLE-Manager-Tools-SLE-11-x86_64.repo
+    - name: /etc/zypp/repos.d/Devel_Galaxy_Manager_Head_SLE-Manager-Tools-11-x86_64.repo
+    - source: salt://default/repos.d/Devel_Galaxy_Manager_Head_SLE-Manager-Tools-11-x86_64.repo
     - template: jinja
 {% endif %}
 
@@ -169,7 +157,7 @@ allow-vendor-changes:
     - makedirs: True
     - contents: |
         [main]
-        vendors = SUSE,obs://build.suse.de/Devel:Galaxy,openSUSE Build Service
+        vendors = SUSE,obs://build.suse.de/Devel:Galaxy
 
 refresh-default-repos:
   cmd.run:
@@ -191,37 +179,18 @@ galaxy_key:
     - name: rpm --import /tmp/galaxy.key
     - watch:
       - file: galaxy_key
-
-{% if grains['osmajorrelease'] == '7' %}
-{% if 'head' in grains.get('version', '') or '3.1-stable' in grains.get('version', '') %}
-tools-repo:
+{% if grains['os'] == 'CentOS' %}
+  {% if grains['osmajorrelease'] == '7' %}
+centos-salt-repo:
   file.managed:
-    - name: /etc/yum.repos.d/Devel_Galaxy_Manager_Head_RES-Manager-Tools-7-x86_64.repo
-    - source: salt://default/repos.d/Devel_Galaxy_Manager_Head_RES-Manager-Tools-7-x86_64.repo
+    - name: /etc/yum.repos.d/SUSE_RES-7_Update_standard.repo
+    - source: salt://default/repos.d/SUSE_RES-7.repo
     - template: jinja
     - require:
       - cmd: galaxy_key
-{% elif 'nightly' in grains.get('version', '') %}
-tools-repo:
-  file.managed:
-    - name: /etc/yum.repos.d/Devel_Galaxy_Manager_3.0_RES-Manager-Tools-7-x86_64.repo
-    - source: salt://default/repos.d/Devel_Galaxy_Manager_3.0_RES-Manager-Tools-7-x86_64.repo
-    - template: jinja
-    - require:
-      - cmd: galaxy_key
-{% elif 'stable' in grains.get('version', 'stable') %}
-tools-repo:
-  file.managed:
-    - name: /etc/yum.repos.d/SLE-Manager-Tools-RES-7-x86_64.repo
-    - source: salt://default/repos.d/SLE-Manager-Tools-RES-7-x86_64.repo
-    - template: jinja
-    - require:
-      - cmd: galaxy_key
+  {% endif %}
 {% endif %}
 {% endif %}
-
-{% endif %}
-
 {% for label, url in grains['additional_repos'].items() %}
 {{ label }}-repo:
   pkgrepo.managed:
