@@ -52,3 +52,8 @@ variable "name_prefix" {
   description = "a prefix for all names of objects to avoid collisions. Eg. moio-"
   default = ""
 }
+
+variable "create_all_images"{
+  description = "This variable if true will create all images avaible. Otherwise we create images for 12sp1 12sp2 and centos7 only."
+  default = false
+}

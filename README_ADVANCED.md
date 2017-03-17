@@ -233,3 +233,11 @@ module "minsles12sp1" {
   ]
 }
 ```
+
+### Create all Images on demand:
+
+By default sumaform will create only Sles12sp1 Sles12sp2 and centos7 images.
+
+If you need more images, enable the variable on base:
+
+create_all_images = true

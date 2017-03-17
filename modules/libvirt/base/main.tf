@@ -6,24 +6,28 @@ resource "libvirt_volume" "opensuse422" {
   name = "${var.name_prefix}opensuse422"
   source = "http://download.opensuse.org/repositories/home:/SilvioMoioli:/Terraform:/Images/images/opensuse422.x86_64.qcow2"
   pool = "${var.pool}"
+  count = "${var.create_all_images}"
 }
 
 resource "libvirt_volume" "sles11sp3" {
   name = "${var.name_prefix}sles11sp3"
   source = "http://download.suse.de/ibs/Devel:/Galaxy:/Terraform:/Images/images/sles11sp3.x86_64.qcow2"
   pool = "${var.pool}"
+  count = "${var.create_all_images}"
 }
 
 resource "libvirt_volume" "sles11sp4" {
   name = "${var.name_prefix}sles11sp4"
   source = "http://download.suse.de/ibs/Devel:/Galaxy:/Terraform:/Images/images/sles11sp4.x86_64.qcow2"
   pool = "${var.pool}"
+  count = "${var.create_all_images}"
 }
 
 resource "libvirt_volume" "sles12" {
   name = "${var.name_prefix}sles12"
   source = "http://download.suse.de/ibs/Devel:/Galaxy:/Terraform:/Images/images/sles12.x86_64.qcow2"
   pool = "${var.pool}"
+  count = "${var.create_all_images}"
 }
 
 resource "libvirt_volume" "sles12sp1" {
