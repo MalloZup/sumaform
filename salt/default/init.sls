@@ -63,10 +63,9 @@ authorized_keys:
 {% if (grains['gpg_keys'] is defined) %}
 {% set listkey = gpg_keys.split() %}
 {% for keypath in listkey %}
-{% set gpgkey = {{ salt['file.basename'](keypath) }} %}
 gpg_key_copy_{{ keypath }}:
   file.managed:
-    - name: /tmp/{{ gpgkey }} 
+    - name: /tmp/{{ salt['file.basename'](keypath) }} %}
     - source: {{ keypath }}
 {% endfor %}
 {% endif %}
