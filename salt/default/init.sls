@@ -60,3 +60,11 @@ authorized_keys:
 {% endfor %}
     - makedirs: True
 {% endif %}
+{% if grains['gpg_keys'] %}
+gpg_key_copy:
+{% for keypath in grains['gpg_keys'] %}
+  file.managed:
+    - name: /tmp/{{ keypath | basename }}
+    - source: {{ keypath }}
+{% endfor %}
+{% endif %}
