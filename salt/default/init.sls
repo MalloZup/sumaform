@@ -64,7 +64,7 @@ authorized_keys:
 gpg_key_copy:
 {% for keypath in grains['gpg_keys'] %}
   file.managed:
-    - name: /tmp/{{ keypath | basename }}
+    - name: /tmp/{{ salt['file.basename'](keypath) }} 
     - source: {{ keypath }}
 {% endfor %}
 {% endif %}
