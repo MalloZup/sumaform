@@ -65,5 +65,5 @@ variable "ssh_key_path" {
 }
 variable "gpg_keys" {
   description = "gpg keys"
-  default = []
+  default = "/dev/null"
 }
