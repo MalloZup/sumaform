@@ -61,8 +61,8 @@ authorized_keys:
     - makedirs: True
 {% endif %}
 {% if (grains['gpg_keys'] is defined) %}
-gpg_key_copy:
 {% for keypath in grains['gpg_keys'] %}
+gpg_key_copy_{{ keypath }}:
   file.managed:
     - name: /tmp/{{ salt['file.basename'](keypath) }} 
     - source: {{ keypath }}
