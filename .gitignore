@@ -9,4 +9,5 @@
 
 /terraform.tfstate*
 /.terraform/
+.terraform*
 /main.tf
