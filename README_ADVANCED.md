@@ -439,10 +439,26 @@ module "evil-minions" {
   base_configuration = "${module.base.configuration}"
 
   name = "evil-minions"
-  server_configuration = "${module.suma31pg.configuration}"
+  server_configuration = "${module.srv.configuration}"
   // see modules/libvirt/evil_minions/variables.tf for possible values
 }
 ```
+
+## Use Locust for http load testing
+
+You can deploy a locust host to test load http performance in your SUSE Manager server. An example would be:
+
+```hcl
+module "locust" {
+  source = "./modules/libvirt/locust"
+  base_configuration = "${module.base.configuration}"
+  server_configuration = "${module.srv.configuration}"
+  // see modules/libvirt/locust/variables.tf for possible values
+}
+
+```
+
+With the variable ```locust_file``` you can inject in the locust VM a custom locust_file that you want to execute. Per default there is already a minimal example
 
 ## Use SUSE Linux Enterprise unreleased (Test) packages
 
