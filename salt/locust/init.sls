@@ -8,6 +8,13 @@ locustio:
       - pkg: python-pip
       - pkg: locust-prereq
 
+prometheus-clint:
+  pip.installed:
+   - name: prometheus-client >= 0.1.0, <= 0.1.1	
+   - require:
+     - pkg: python-pip
+     - pkg: locust-prereq
+
 locust-prereq:
   pkg.installed:
     - pkgs:
